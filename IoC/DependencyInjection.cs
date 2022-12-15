@@ -9,6 +9,8 @@ using Domain.EntregaNS.Interfaces;
 using Domain.AlunoNS.Interfaces;
 using Domain.AlunoNS.Service;
 using Domain.EntregaNS.Service;
+using Domain.Queue.Interface;
+using Domain.Queue.Service;
 
 namespace IoC
 {
@@ -22,7 +24,7 @@ namespace IoC
             services.AddScoped<IEntregaRepository, EntregaRepository>();
             services.AddScoped<IAlunoService, AlunoService>();
             services.AddScoped<IEntregaService, EntregaService>();
-            //services.AddScoped<IQueueService, QueueService>();
+            services.AddScoped<IQueueService, QueueService>();
             return services;
         }
     }

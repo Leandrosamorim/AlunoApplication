@@ -1,7 +1,8 @@
 ﻿using Data.Context;
 using Domain.EntregaNS.Interfaces;
-using Domain.EntregaNS.Queries;
+using Domain.EntregaNS.Query;
 using Domain.Models.EntregaNS;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
@@ -17,7 +18,7 @@ namespace Data.Repositories
         {
             try
             {
-                _context.Entregas.Add(entrega);
+                _context.Entrega.Add(entrega);
                 _context.SaveChanges();
                 return true;
             }
@@ -31,7 +32,8 @@ namespace Data.Repositories
         {
             try
             {
-                return _context.Entregas.Where(x => x.AlunoId == query.AlunoId || x.Id == query.EntregaId || x.TarefaId == query.TarefaId).ToList();
+                var entregas = _context.Entrega.Where(x => x.AlunoId == query.AlunoId || x.Id == query.EntregaId || x.TarefaId == query.TarefaId).Include(e => e.Avaliacao).ToList();
+                return entregas;
             }
             catch
             {

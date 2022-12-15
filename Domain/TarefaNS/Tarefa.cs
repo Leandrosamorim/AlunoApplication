@@ -1,4 +1,5 @@
-﻿using Domain.Models.EntregaNS;
+﻿using Domain.Models.AlunoNS;
+using Domain.Models.EntregaNS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,6 +19,11 @@ namespace Domain.Models.TarefaNS
         public string? Name { get; set; }
         public string? Descricao { get; set; }
         public DateTime DataEntrega { get; set; }
-        public Entrega? Entrega { get; set; }
+        public virtual HashSet<Entrega>? Entrega { get; set; }
+
+        public Tarefa()
+        {
+            this.Entrega = new HashSet<Entrega>();
+        }
     }
 }

@@ -19,6 +19,11 @@ namespace Domain.Models.AtrasoNS
         [ForeignKey("Aluno")]
         public int AlunoId { get; set; }
         public DateTime Data { get; set; }
-        public Justificativa? Justificativa { get; set; }
+        public virtual Justificativa? Justificativa { get; set; }
+
+        public Atraso()
+        {
+            this.Justificativa = new Justificativa();
+        }
     }
 }

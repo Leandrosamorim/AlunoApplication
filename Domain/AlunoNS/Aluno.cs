@@ -2,7 +2,7 @@
 using Domain.Models.AtrasoNS;
 using Domain.Models.EntregaNS;
 using Domain.Models.FaltaNS;
-using Domain.Models.TurmaNS;
+using Domain.Models.JustificativaNS;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,9 +18,16 @@ namespace Domain.Models.AlunoNS
         public string Password { get; set; }
         [ForeignKey("Turma")]
         public int TurmaId { get; set; }
-        public List<Falta>? Faltas { get; set; }
-        public List<Atraso>? Atrasos { get; set; }
-        public List<Entrega>? Entregas { get; set; }
+        public virtual HashSet<Falta>? Faltas { get; set; }
+        public virtual HashSet<Atraso>? Atrasos { get; set; }
+        public virtual HashSet<Entrega>? Entregas { get; set; }
+
+        public Aluno()
+        {
+            this.Faltas = new HashSet<Falta>();
+            this.Atrasos = new HashSet<Atraso>();
+            this.Entregas = new HashSet<Entrega>();
+        }
     }
 
     public static class AlunoFactory

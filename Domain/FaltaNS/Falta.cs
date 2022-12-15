@@ -1,4 +1,5 @@
-﻿using Domain.Models.JustificativaNS;
+﻿using Domain.Models.EntregaNS;
+using Domain.Models.JustificativaNS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,6 +20,11 @@ namespace Domain.Models.FaltaNS
         [Required]
         public int AlunoId { get; set; }
         public DateTime Data { get; set; }
-        public Justificativa? Justificativa {get;set;}
+        public virtual Justificativa? Justificativa {get;set;}
+
+        public Falta()
+        {
+            this.Justificativa = new Justificativa();
+        }
     }
 }

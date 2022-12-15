@@ -19,7 +19,12 @@ namespace Domain.Models.TurmaNS
         public int Id { get; set; }
         public string Name { get; set; }
         public Professor? Professor { get; set; }
-        public List<Aluno>? Alunos { get; set; } = null;
-        public List<Tarefa>? Tarefas { get; set; } = null;
+        public virtual HashSet<Aluno>? Alunos { get; set; } = null;
+        public virtual List<Tarefa>? Tarefas { get; set; } = null;
+
+        public Turma()
+        {
+            this.Alunos = new HashSet<Aluno>();
+        }
     }
 }

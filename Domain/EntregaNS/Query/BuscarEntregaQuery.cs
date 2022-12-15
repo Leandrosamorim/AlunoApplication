@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.EntregaNS.Queries
+namespace Domain.EntregaNS.Query
 {
     public class BuscarEntregaQuery
     {

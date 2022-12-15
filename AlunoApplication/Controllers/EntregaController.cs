@@ -6,7 +6,7 @@ using Domain.EntregaNS.Interfaces;
 using Domain.EntregaNS;
 using Microsoft.AspNetCore.Authorization;
 using BrunoZell.ModelBinding;
-using Domain.EntregaNS.Queries;
+using Domain.EntregaNS.Query;
 using Domain.Models.EntregaNS;
 
 namespace AlunoApplication.Controllers

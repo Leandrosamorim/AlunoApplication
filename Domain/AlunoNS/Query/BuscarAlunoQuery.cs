@@ -10,6 +10,6 @@ namespace Domain.Models.AlunoNS.Query
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
-        public int? TurmaId { get; set; }
+        public int[]? TurmaId { get; set; }
     }
 }

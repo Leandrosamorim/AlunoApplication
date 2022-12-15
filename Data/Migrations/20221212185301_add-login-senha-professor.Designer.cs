@@ -4,6 +4,7 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AlunoContext))]
-    partial class AlunoContextModelSnapshot : ModelSnapshot
+    [Migration("20221212185301_add-login-senha-professor")]
+    partial class addloginsenhaprofessor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace Data.Migrations
 
                     b.HasIndex("TurmaId");
 
-                    b.ToTable("Aluno");
+                    b.ToTable("Alunos");
                 });
 
             modelBuilder.Entity("Domain.Models.AtrasoNS.Atraso", b =>
@@ -86,16 +89,10 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EntregaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Nota")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EntregaId")
-                        .IsUnique();
 
                     b.ToTable("Avaliacao");
                 });
@@ -109,6 +106,9 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AvaliacaoId")
                         .HasColumnType("int");
 
                     b.Property<string>("BlobUrl")
@@ -125,9 +125,12 @@ namespace Data.Migrations
 
                     b.HasIndex("AlunoId");
 
-                    b.HasIndex("TarefaId");
+                    b.HasIndex("AvaliacaoId");
 
-                    b.ToTable("Entrega");
+                    b.HasIndex("TarefaId")
+                        .IsUnique();
+
+                    b.ToTable("Entregas");
                 });
 
             modelBuilder.Entity("Domain.Models.FaltaNS.Falta", b =>
@@ -244,7 +247,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ProfessorId");
 
-                    b.ToTable("Turma");
+                    b.ToTable("Turmas");
                 });
 
             modelBuilder.Entity("Domain.Models.AlunoNS.Aluno", b =>
@@ -271,15 +274,6 @@ namespace Data.Migrations
                     b.Navigation("Justificativa");
                 });
 
-            modelBuilder.Entity("Domain.Models.AvaliacaoNS.Avaliacao", b =>
-                {
-                    b.HasOne("Domain.Models.EntregaNS.Entrega", null)
-                        .WithOne("Avaliacao")
-                        .HasForeignKey("Domain.Models.AvaliacaoNS.Avaliacao", "EntregaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Models.EntregaNS.Entrega", b =>
                 {
                     b.HasOne("Domain.Models.AlunoNS.Aluno", null)
@@ -288,11 +282,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.AvaliacaoNS.Avaliacao", "Avaliacao")
+                        .WithMany()
+                        .HasForeignKey("AvaliacaoId");
+
                     b.HasOne("Domain.Models.TarefaNS.Tarefa", null)
-                        .WithMany("Entrega")
-                        .HasForeignKey("TarefaId")
+                        .WithOne("Entrega")
+                        .HasForeignKey("Domain.Models.EntregaNS.Entrega", "TarefaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Avaliacao");
                 });
 
             modelBuilder.Entity("Domain.Models.FaltaNS.Falta", b =>
@@ -333,11 +333,6 @@ namespace Data.Migrations
                     b.Navigation("Entregas");
 
                     b.Navigation("Faltas");
-                });
-
-            modelBuilder.Entity("Domain.Models.EntregaNS.Entrega", b =>
-                {
-                    b.Navigation("Avaliacao");
                 });
 
             modelBuilder.Entity("Domain.Models.TarefaNS.Tarefa", b =>

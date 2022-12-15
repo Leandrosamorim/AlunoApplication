@@ -1,5 +1,8 @@
 ﻿using Domain.Models.AlunoNS;
+using Domain.Models.AtrasoNS;
 using Domain.Models.EntregaNS;
+using Domain.Models.FaltaNS;
+using Domain.Models.JustificativaNS;
 using Domain.Models.TurmaNS;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,8 +19,11 @@ namespace Data.Context
         {
 
         }
-        public virtual DbSet<Aluno> Alunos { get; set; }
-        public virtual DbSet<Entrega> Entregas { get; set; }
-        public virtual DbSet<Turma> Turmas { get; set; }
+        public virtual DbSet<Aluno> Aluno { get; set; }
+        public virtual DbSet<Atraso> Atraso { get; set; }
+        public virtual DbSet<Falta> Falta { get; set; }
+        public virtual DbSet<Justificativa> Justificativa { get; set; }
+        public virtual DbSet<Entrega> Entrega { get; set; }
+        public virtual DbSet<Turma> Turma { get; set; }
     }
 }

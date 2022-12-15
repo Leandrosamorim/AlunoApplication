@@ -11,6 +11,8 @@ namespace Domain.Models.AvaliacaoNS
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int Nota { get; set; }
+        [ForeignKey("Entregs")]
+        public int EntregaId { get; set; }
 
     }
 }

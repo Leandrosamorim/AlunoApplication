@@ -4,6 +4,7 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AlunoContext))]
-    partial class AlunoContextModelSnapshot : ModelSnapshot
+    [Migration("20221213191645_hashset")]
+    partial class hashset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,16 +89,10 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EntregaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Nota")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EntregaId")
-                        .IsUnique();
 
                     b.ToTable("Avaliacao");
                 });
@@ -111,6 +108,9 @@ namespace Data.Migrations
                     b.Property<int>("AlunoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AvaliacaoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BlobUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -124,6 +124,8 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
+
+                    b.HasIndex("AvaliacaoId");
 
                     b.HasIndex("TarefaId");
 
@@ -271,15 +273,6 @@ namespace Data.Migrations
                     b.Navigation("Justificativa");
                 });
 
-            modelBuilder.Entity("Domain.Models.AvaliacaoNS.Avaliacao", b =>
-                {
-                    b.HasOne("Domain.Models.EntregaNS.Entrega", null)
-                        .WithOne("Avaliacao")
-                        .HasForeignKey("Domain.Models.AvaliacaoNS.Avaliacao", "EntregaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Models.EntregaNS.Entrega", b =>
                 {
                     b.HasOne("Domain.Models.AlunoNS.Aluno", null)
@@ -288,11 +281,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.AvaliacaoNS.Avaliacao", "Avaliacao")
+                        .WithMany()
+                        .HasForeignKey("AvaliacaoId");
+
                     b.HasOne("Domain.Models.TarefaNS.Tarefa", null)
                         .WithMany("Entrega")
                         .HasForeignKey("TarefaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Avaliacao");
                 });
 
             modelBuilder.Entity("Domain.Models.FaltaNS.Falta", b =>
@@ -333,11 +332,6 @@ namespace Data.Migrations
                     b.Navigation("Entregas");
 
                     b.Navigation("Faltas");
-                });
-
-            modelBuilder.Entity("Domain.Models.EntregaNS.Entrega", b =>
-                {
-                    b.Navigation("Avaliacao");
                 });
 
             modelBuilder.Entity("Domain.Models.TarefaNS.Tarefa", b =>
